@@ -55,6 +55,20 @@ export const channelCreateModal: ModalHandler = {
       return;
     }
 
+    const projectedTotal = interaction.guild.channels.cache.size + count;
+    if (projectedTotal > CHANNEL_CREATE_LIMITS.guildChannelCap) {
+      await interaction.reply({
+        embeds: [
+          errorEmbed(
+            `디스코드 서버당 채널 최대 개수(${CHANNEL_CREATE_LIMITS.guildChannelCap}개)를 초과합니다. ` +
+              `현재 ${interaction.guild.channels.cache.size}개 + 요청 ${count}개 = ${projectedTotal}개.`,
+          ),
+        ],
+        flags: MessageFlags.Ephemeral,
+      });
+      return;
+    }
+
     const isFromMessage = interaction.isFromMessage();
     const progressEmbed = brandEmbed(COLORS.warning)
       .setTitle('⏳ 채널 생성 중...')

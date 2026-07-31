@@ -58,6 +58,8 @@ export const ComponentId = {
   serverCancel: 'server:cancel',
   channelCreateStart: 'channelcreate:start',
   channelCreateModal: 'channelcreate:modal',
+  messageSendChannel: 'messagesend:channel',
+  messageSendModal: 'messagesend:modal',
 } as const;
 
 /** 환영/퇴장 메시지 템플릿 치환 변수: {user} {server} {memberCount} */

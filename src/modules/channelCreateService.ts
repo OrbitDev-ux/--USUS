@@ -12,8 +12,10 @@ const KIND_TYPE: Record<ChannelKind, ChannelType.GuildText | ChannelType.GuildVo
 
 export const CHANNEL_CREATE_LIMITS = {
   minCount: 1,
-  maxCount: 20,
+  maxCount: 500,
   maxNameLength: 80,
+  /** 디스코드가 서버당 허용하는 채널(카테고리 포함) 총 개수. */
+  guildChannelCap: 500,
 } as const;
 
 export const CHANNEL_CREATE_MODAL_FIELD = {

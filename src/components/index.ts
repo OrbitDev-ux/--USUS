@@ -17,6 +17,7 @@ import { ticketClose, ticketCreate, ticketDelete } from './buttons/ticketButtons
 import { announceModal } from './modals/announceModal';
 import { channelCreateModal } from './modals/channelCreateModal';
 import { gameGuessModal } from './modals/gameGuessModal';
+import { messageSendModal } from './modals/messageSendModal';
 import { orderQuoteModal } from './modals/orderQuoteModal';
 import { reportModal } from './modals/reportModal';
 import { reviewModal } from './modals/reviewModal';
@@ -24,6 +25,7 @@ import { settingsMessagesModal } from './modals/settingsMessagesModal';
 import { ticketCreateModal } from './modals/ticketCreateModal';
 import { updateModal } from './modals/updateModal';
 import { gameMenu } from './selectMenus/gameMenu';
+import { messageSendChannel } from './selectMenus/messageSendChannel';
 import { settingsChannel } from './selectMenus/settingsChannel';
 import { settingsMenu } from './selectMenus/settingsMenu';
 import { settingsRole } from './selectMenus/settingsRole';
@@ -51,7 +53,7 @@ export const buttonHandlers: readonly ButtonHandler[] = [
 
 export const stringSelectHandlers: readonly StringSelectHandler[] = [settingsMenu, gameMenu];
 
-export const channelSelectHandlers: readonly ChannelSelectHandler[] = [settingsChannel];
+export const channelSelectHandlers: readonly ChannelSelectHandler[] = [settingsChannel, messageSendChannel];
 
 export const roleSelectHandlers: readonly RoleSelectHandler[] = [settingsRole];
 
@@ -65,4 +67,5 @@ export const modalHandlers: readonly ModalHandler[] = [
   reviewModal,
   gameGuessModal,
   channelCreateModal,
+  messageSendModal,
 ];

@@ -35,7 +35,7 @@ export const channelCreateStart: ButtonHandler = {
             .setLabel(`개수 (${CHANNEL_CREATE_LIMITS.minCount}~${CHANNEL_CREATE_LIMITS.maxCount})`)
             .setPlaceholder('1')
             .setStyle(TextInputStyle.Short)
-            .setMaxLength(2)
+            .setMaxLength(3)
             .setRequired(true),
         ),
         new ActionRowBuilder<TextInputBuilder>().addComponents(
