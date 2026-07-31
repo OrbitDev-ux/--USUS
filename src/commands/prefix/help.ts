@@ -34,6 +34,10 @@ export const helpCommand: PrefixCommand = {
             { name: '🚨 신고', value: contextMenuLines.join('\n') },
             { name: '🛠️ 관리자 명령어', value: adminCommandLines.join('\n') },
             {
+              name: '🔧 관리자 접두사 명령어 (서버 관리 권한 필요)',
+              value: `\`${PREFIX}채널생성\` — 버튼·모달로 이름·개수·종류를 입력해 채널을 한 번에 여러 개 생성`,
+            },
+            {
               name: '⚠️ 관리자 전용 서버 관리 (Administrator 권한 필요)',
               value: [
                 `\`${PREFIX}서버저장\` — 현재 채널·역할 구조를 백업으로 저장`,

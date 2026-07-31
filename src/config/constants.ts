@@ -56,6 +56,8 @@ export const ComponentId = {
   gameGuessModal: 'game:guess:modal',
   serverConfirm: 'server:confirm',
   serverCancel: 'server:cancel',
+  channelCreateStart: 'channelcreate:start',
+  channelCreateModal: 'channelcreate:modal',
 } as const;
 
 /** 환영/퇴장 메시지 템플릿 치환 변수: {user} {server} {memberCount} */

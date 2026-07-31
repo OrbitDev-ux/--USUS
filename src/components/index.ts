@@ -6,6 +6,7 @@ import type {
   StringSelectHandler,
 } from '../types';
 import { authVerify } from './buttons/authVerify';
+import { channelCreateStart } from './buttons/channelCreateButtons';
 import { gameDiceRoll, gameGuessStart, gameRpsChoice, gameRpsReplay } from './buttons/gameButtons';
 import { orderQuote } from './buttons/orderQuote';
 import { reportDismiss, reportResolve } from './buttons/reportActions';
@@ -14,6 +15,7 @@ import { serverCancel, serverConfirm } from './buttons/serverActions';
 import { settingsAutomodToggle, settingsBack, settingsToggle } from './buttons/settingsButtons';
 import { ticketClose, ticketCreate, ticketDelete } from './buttons/ticketButtons';
 import { announceModal } from './modals/announceModal';
+import { channelCreateModal } from './modals/channelCreateModal';
 import { gameGuessModal } from './modals/gameGuessModal';
 import { orderQuoteModal } from './modals/orderQuoteModal';
 import { reportModal } from './modals/reportModal';
@@ -39,6 +41,7 @@ export const buttonHandlers: readonly ButtonHandler[] = [
   gameRpsReplay,
   gameDiceRoll,
   gameGuessStart,
+  channelCreateStart,
   serverConfirm,
   serverCancel,
   settingsToggle,
@@ -61,4 +64,5 @@ export const modalHandlers: readonly ModalHandler[] = [
   reportModal,
   reviewModal,
   gameGuessModal,
+  channelCreateModal,
 ];

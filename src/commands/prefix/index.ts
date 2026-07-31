@@ -1,4 +1,5 @@
 import type { PrefixCommand } from '../../types';
+import { channelCreateCommand } from './channelCreate';
 import { helpCommand } from './help';
 import { minigameCommand } from './minigame';
 import { pingCommand } from './ping';
@@ -10,6 +11,7 @@ export const prefixCommands: readonly PrefixCommand[] = [
   pingCommand,
   helpCommand,
   minigameCommand,
+  channelCreateCommand,
   serverSaveCommand,
   serverResetCommand,
   serverRestoreCommand,
