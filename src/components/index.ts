@@ -6,18 +6,21 @@ import type {
   StringSelectHandler,
 } from '../types';
 import { authVerify } from './buttons/authVerify';
+import { gameDiceRoll, gameGuessStart, gameRpsChoice, gameRpsReplay } from './buttons/gameButtons';
 import { orderQuote } from './buttons/orderQuote';
 import { reportDismiss, reportResolve } from './buttons/reportActions';
 import { reviewCreate } from './buttons/reviewButtons';
 import { settingsAutomodToggle, settingsBack, settingsToggle } from './buttons/settingsButtons';
 import { ticketClose, ticketCreate, ticketDelete } from './buttons/ticketButtons';
 import { announceModal } from './modals/announceModal';
+import { gameGuessModal } from './modals/gameGuessModal';
 import { orderQuoteModal } from './modals/orderQuoteModal';
 import { reportModal } from './modals/reportModal';
 import { reviewModal } from './modals/reviewModal';
 import { settingsMessagesModal } from './modals/settingsMessagesModal';
 import { ticketCreateModal } from './modals/ticketCreateModal';
 import { updateModal } from './modals/updateModal';
+import { gameMenu } from './selectMenus/gameMenu';
 import { settingsChannel } from './selectMenus/settingsChannel';
 import { settingsMenu } from './selectMenus/settingsMenu';
 import { settingsRole } from './selectMenus/settingsRole';
@@ -31,12 +34,16 @@ export const buttonHandlers: readonly ButtonHandler[] = [
   reviewCreate,
   reportResolve,
   reportDismiss,
+  gameRpsChoice,
+  gameRpsReplay,
+  gameDiceRoll,
+  gameGuessStart,
   settingsToggle,
   settingsAutomodToggle,
   settingsBack,
 ];
 
-export const stringSelectHandlers: readonly StringSelectHandler[] = [settingsMenu];
+export const stringSelectHandlers: readonly StringSelectHandler[] = [settingsMenu, gameMenu];
 
 export const channelSelectHandlers: readonly ChannelSelectHandler[] = [settingsChannel];
 
@@ -50,4 +57,5 @@ export const modalHandlers: readonly ModalHandler[] = [
   updateModal,
   reportModal,
   reviewModal,
+  gameGuessModal,
 ];

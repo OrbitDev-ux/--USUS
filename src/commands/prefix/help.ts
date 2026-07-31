@@ -21,9 +21,11 @@ export const helpCommand: PrefixCommand = {
           .addFields(
             {
               name: '💬 일반 명령어',
-              value: [`\`${PREFIX}핑\` — 봇의 응답 속도를 확인합니다`, `\`${PREFIX}도움말\` — 이 안내를 표시합니다`].join(
-                '\n',
-              ),
+              value: [
+                `\`${PREFIX}핑\` — 봇의 응답 속도를 확인합니다`,
+                `\`${PREFIX}도움말\` — 이 안내를 표시합니다`,
+                `\`${PREFIX}미니게임\` — 가위바위보·주사위·숫자맞추기를 즐깁니다`,
+              ].join('\n'),
             },
             {
               name: '🖱️ 패널 이용',

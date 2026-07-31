@@ -48,6 +48,12 @@ export const ComponentId = {
   reportDismiss: 'report:dismiss',
   reviewCreate: 'review:create',
   reviewModal: 'review:modal',
+  gameMenu: 'game:menu',
+  gameRpsChoice: 'game:rps',
+  gameRpsReplay: 'game:rpsreplay',
+  gameDiceRoll: 'game:dice',
+  gameGuessStart: 'game:guess:start',
+  gameGuessModal: 'game:guess:modal',
 } as const;
 
 /** 환영/퇴장 메시지 템플릿 치환 변수: {user} {server} {memberCount} */
