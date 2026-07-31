@@ -5,6 +5,7 @@ export * from './event';
 export * from './maintenance';
 export * from './order';
 export * from './portfolio';
+export * from './prefixCommand';
 export * from './report';
 export * from './review';
 export * from './settings';

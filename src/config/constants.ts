@@ -3,6 +3,9 @@ export const BRAND = {
   footer: 'Syntax Studio Services',
 } as const;
 
+/** 일반 유저용 접두사 명령어(.핑, .도움말)의 접두사 */
+export const PREFIX = '.' as const;
+
 export const COLORS = {
   primary: 0x5865f2,
   success: 0x57f287,

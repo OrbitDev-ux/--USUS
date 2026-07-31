@@ -1,7 +1,8 @@
 import { randomUUID } from 'node:crypto';
-import { Events } from 'discord.js';
+import { Events, type Message } from 'discord.js';
+import { prefixCommandMap } from '../commands/prefix';
 import { AUTOMOD_RULE_DEFS } from '../config/automodSchema';
-import { COLORS } from '../config/constants';
+import { COLORS, PREFIX } from '../config/constants';
 import { detectViolation } from '../modules/automodService';
 import { sendLog } from '../modules/logService';
 import { getGuildSettings } from '../storage/settingsStore';
@@ -12,10 +13,27 @@ import { isStaff } from '../utils/permissions';
 
 const NOTICE_AUTO_DELETE_MS = 6_000;
 
+async function tryRunPrefixCommand(message: Message<true>): Promise<boolean> {
+  if (!message.content.startsWith(PREFIX)) {
+    return false;
+  }
+  const [name, ...args] = message.content.slice(PREFIX.length).trim().split(/\s+/);
+  const command = name === undefined ? undefined : prefixCommandMap.get(name);
+  if (command === undefined) {
+    return false;
+  }
+  await command.execute(message, args);
+  return true;
+}
+
 export const messageCreateEvent = defineEvent({
   name: Events.MessageCreate,
   async execute(message) {
     if (message.author.bot || !message.inGuild()) {
+      return;
+    }
+
+    if (await tryRunPrefixCommand(message)) {
       return;
     }
 
