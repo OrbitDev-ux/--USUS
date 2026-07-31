@@ -10,6 +10,7 @@ import { gameDiceRoll, gameGuessStart, gameRpsChoice, gameRpsReplay } from './bu
 import { orderQuote } from './buttons/orderQuote';
 import { reportDismiss, reportResolve } from './buttons/reportActions';
 import { reviewCreate } from './buttons/reviewButtons';
+import { serverCancel, serverConfirm } from './buttons/serverActions';
 import { settingsAutomodToggle, settingsBack, settingsToggle } from './buttons/settingsButtons';
 import { ticketClose, ticketCreate, ticketDelete } from './buttons/ticketButtons';
 import { announceModal } from './modals/announceModal';
@@ -38,6 +39,8 @@ export const buttonHandlers: readonly ButtonHandler[] = [
   gameRpsReplay,
   gameDiceRoll,
   gameGuessStart,
+  serverConfirm,
+  serverCancel,
   settingsToggle,
   settingsAutomodToggle,
   settingsBack,

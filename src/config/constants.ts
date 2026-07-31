@@ -54,6 +54,8 @@ export const ComponentId = {
   gameDiceRoll: 'game:dice',
   gameGuessStart: 'game:guess:start',
   gameGuessModal: 'game:guess:modal',
+  serverConfirm: 'server:confirm',
+  serverCancel: 'server:cancel',
 } as const;
 
 /** 환영/퇴장 메시지 템플릿 치환 변수: {user} {server} {memberCount} */

@@ -33,6 +33,14 @@ export const helpCommand: PrefixCommand = {
             },
             { name: '🚨 신고', value: contextMenuLines.join('\n') },
             { name: '🛠️ 관리자 명령어', value: adminCommandLines.join('\n') },
+            {
+              name: '⚠️ 관리자 전용 서버 관리 (Administrator 권한 필요)',
+              value: [
+                `\`${PREFIX}서버저장\` — 현재 채널·역할 구조를 백업으로 저장`,
+                `\`${PREFIX}서버초기화\` — 모든 채널·역할 삭제 (자동 백업 + 버튼 확인 필요)`,
+                `\`${PREFIX}서버백업\` — 저장된 백업으로 채널·역할 복구 (버튼 확인 필요)`,
+              ].join('\n'),
+            },
           ),
       ],
     });

@@ -8,6 +8,7 @@ export * from './portfolio';
 export * from './prefixCommand';
 export * from './report';
 export * from './review';
+export * from './serverBackup';
 export * from './settings';
 export * from './ticket';
 export * from './update';
