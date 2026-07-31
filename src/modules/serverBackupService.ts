@@ -82,33 +82,21 @@ export function captureServerSnapshot(guild: Guild, createdBy: string): ServerBa
 // ─── 초기화(전체 삭제) ───────────────────────────────────────────
 
 export async function wipeServer(guild: Guild): Promise<WipeResult> {
-  let channelsDeleted = 0;
-  let rolesDeleted = 0;
-  let errors = 0;
-
-  for (const channel of [...guild.channels.cache.values()]) {
-    try {
-      await channel.delete();
-      channelsDeleted += 1;
-    } catch {
-      errors += 1;
-    }
-  }
+  const channelResults = await Promise.allSettled(
+    [...guild.channels.cache.values()].map((channel) => channel.delete()),
+  );
+  const channelsDeleted = channelResults.filter((r) => r.status === 'fulfilled').length;
+  const channelErrors = channelResults.filter((r) => r.status === 'rejected').length;
 
   const botTopPosition = guild.members.me?.roles.highest.position ?? 0;
-  for (const role of [...guild.roles.cache.values()]) {
-    if (role.id === guild.id || role.managed || role.position >= botTopPosition) {
-      continue;
-    }
-    try {
-      await role.delete();
-      rolesDeleted += 1;
-    } catch {
-      errors += 1;
-    }
-  }
+  const deletableRoles = [...guild.roles.cache.values()].filter(
+    (role) => role.id !== guild.id && !role.managed && role.position < botTopPosition,
+  );
+  const roleResults = await Promise.allSettled(deletableRoles.map((role) => role.delete()));
+  const rolesDeleted = roleResults.filter((r) => r.status === 'fulfilled').length;
+  const roleErrors = roleResults.filter((r) => r.status === 'rejected').length;
 
-  return { channelsDeleted, rolesDeleted, errors };
+  return { channelsDeleted, rolesDeleted, errors: channelErrors + roleErrors };
 }
 
 // ─── 백업 데이터로 복구 ───────────────────────────────────────────
@@ -139,9 +127,8 @@ export async function restoreServerFromBackup(guild: Guild, backup: ServerBackup
   }
 
   const roleIdMap = new Map<string, string>();
-  const sortedRoles = [...backup.roles].sort((a, b) => a.position - b.position);
-  for (const roleSnapshot of sortedRoles) {
-    try {
+  const roleResults = await Promise.allSettled(
+    backup.roles.map(async (roleSnapshot) => {
       const role = await guild.roles.create({
         name: roleSnapshot.name,
         color: roleSnapshot.color,
@@ -150,11 +137,10 @@ export async function restoreServerFromBackup(guild: Guild, backup: ServerBackup
         permissions: BigInt(roleSnapshot.permissions),
       });
       roleIdMap.set(roleSnapshot.originalId, role.id);
-      rolesCreated += 1;
-    } catch {
-      errors += 1;
-    }
-  }
+    }),
+  );
+  rolesCreated += roleResults.filter((r) => r.status === 'fulfilled').length;
+  errors += roleResults.filter((r) => r.status === 'rejected').length;
 
   const channelIdMap = new Map<string, string>();
   const categorySnapshots = backup.channels
@@ -188,34 +174,32 @@ export async function restoreServerFromBackup(guild: Guild, backup: ServerBackup
       })
       .filter((o): o is ResolvedOverwrite => o !== null);
 
-    try {
-      const channel = await guild.channels.create({
-        name: snapshot.name,
-        type: snapshot.type as Exclude<
-          ChannelType,
-          ChannelType.DM | ChannelType.GroupDM | ChannelType.PublicThread | ChannelType.AnnouncementThread | ChannelType.PrivateThread
-        >,
-        parent: parentId,
-        topic: snapshot.topic ?? undefined,
-        nsfw: snapshot.nsfw,
-        rateLimitPerUser: snapshot.rateLimitPerUser ?? undefined,
-        bitrate: snapshot.bitrate ?? undefined,
-        userLimit: snapshot.userLimit ?? undefined,
-        permissionOverwrites: overwrites,
-      });
-      channelIdMap.set(snapshot.originalId, channel.id);
-      channelsCreated += 1;
-    } catch {
-      errors += 1;
-    }
+    const channel = await guild.channels.create({
+      name: snapshot.name,
+      type: snapshot.type as Exclude<
+        ChannelType,
+        ChannelType.DM | ChannelType.GroupDM | ChannelType.PublicThread | ChannelType.AnnouncementThread | ChannelType.PrivateThread
+      >,
+      parent: parentId,
+      topic: snapshot.topic ?? undefined,
+      nsfw: snapshot.nsfw,
+      rateLimitPerUser: snapshot.rateLimitPerUser ?? undefined,
+      bitrate: snapshot.bitrate ?? undefined,
+      userLimit: snapshot.userLimit ?? undefined,
+      permissionOverwrites: overwrites,
+    });
+    channelIdMap.set(snapshot.originalId, channel.id);
   }
 
-  for (const category of categorySnapshots) {
-    await createFromSnapshot(category);
-  }
-  for (const channel of otherSnapshots) {
-    await createFromSnapshot(channel);
-  }
+  // 카테고리는 자식 채널의 parentId가 참조하므로 먼저 모두 생성한 뒤 나머지를 병렬 생성한다.
+  const categoryResults = await Promise.allSettled(categorySnapshots.map((c) => createFromSnapshot(c)));
+  const otherResults = await Promise.allSettled(otherSnapshots.map((c) => createFromSnapshot(c)));
+  channelsCreated +=
+    categoryResults.filter((r) => r.status === 'fulfilled').length +
+    otherResults.filter((r) => r.status === 'fulfilled').length;
+  errors +=
+    categoryResults.filter((r) => r.status === 'rejected').length +
+    otherResults.filter((r) => r.status === 'rejected').length;
 
   return { rolesCreated, channelsCreated, errors };
 }
